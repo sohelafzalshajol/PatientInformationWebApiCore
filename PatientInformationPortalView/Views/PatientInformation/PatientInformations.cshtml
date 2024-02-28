@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "Patient Information";
+}
+
+<div class="container mb-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <h1>Patient Information</h1>
+            <div class="form" id="piForm">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label for="patientName" class="fw-bold">Patient Name:<span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="patientName" placeholder="Enter patient name">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="ddlDiseases" class="fw-bold">Diseases Name:<span style="color: red;">*</span></label>
+                        <select class="form-control" id="ddlDiseases">
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="ddlEpilepsy" class="fw-bold">Epilepsy:<span style="color: red;">*</span></label>
+                        <select class="form-control" id="ddlEpilepsy">
+                            <option value="0">-- Select one --</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="ddlNCDs" class="fw-bold">Other NCDs:</label>
+                        <select class="form-control" name="ddlNCDs" id="ddlNCDs" multiple>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="ddlAllergies" class="fw-bold">Allergies:</label>
+                        <select class="form-control" name="ddlAllergies" id="ddlAllergies" multiple>
+                        </select>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="mt-3 col-md-2">
+                            <button id="submitButton" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* <div class="row d-flex justify-content-center hidden" id="SuccessMsg">
+                <div class="alert alert-success" role="alert">
+                    <strong>Success!</strong> Data submitted successfully. <a href="@Url.Action("Home", "Index")">View</a> Data
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center hidden" id="ErrorMsg">
+                <div class="alert alert-warning" role="alert">
+                    <strong>Sorry!</strong> Data not saved.
+                </div>
+            </div> *@
+            <!-- Success alert -->
+            <div id="successAlert" class="alert alert-success mt-3" role="alert" style="display: none;">
+                <strong>Success!</strong> Data submitted successfully. <a href="@Url.Action("PatientInformationsList", "PatientInformation")">View</a> Data
+            </div>
+
+            <!-- Error alert -->
+            <div id="errorAlert" class="alert alert-danger mt-3" role="alert" style="display: none;">
+                <strong>Sorry!</strong> Data not saved.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script>
+    $(document).ready(function () {
+        loadddlDiseases();
+        loadddlNCDs();
+        loadddlAllergies();
+    });
+    
+    function loadddlDiseases() {
+        $.ajax({
+            url: '/PatientInformation/GetDiseaseInformationList',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#ddlDiseases').empty();
+                $('#ddlDiseases').append(`<option value="0">-- Select one --</option>`);
+                $.each(response.data, function (index, option) {
+                    $('#ddlDiseases').append(`<option value="${option.diseaseId}">${option.diseaseName}</option>`);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading ddlDiseases dropdown options:', error);
+            }
+        });
+    }
+
+    function loadddlNCDs() {
+        $.ajax({
+            url: '/PatientInformation/GetNCDsList',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#ddlNCDs').empty();
+                $.each(response.data, function (index, option) {
+                    $('#ddlNCDs').append(`<option value="${option.ncdId}">${option.ncdName}</option>`);
+                });
+
+                new MultiSelectTag('ddlNCDs', {
+                    rounded: true,
+                    shadow: true,
+                    placeholder: 'Search NCDs...',
+                    tagColor: {
+                        textColor: '#327b2c',
+                        borderColor: '#43f1f7',
+                        bgColor: '#e8feff',
+                    },
+                    onChange: function (values) {
+                        console.log(values)
+                    }
+                })
+
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading ddlNCDs dropdown options:', error);
+            }
+        });
+    }
+
+    function loadddlAllergies() {
+        $.ajax({
+            url: '/PatientInformation/GetAllergiesList',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                debugger;
+                $('#ddlAllergies').empty();
+                $.each(response.data, function (index, option) {
+                    $('#ddlAllergies').append(`<option value="${option.allergyId}">${option.allergyName}</option>`);
+                });
+
+                new MultiSelectTag('ddlAllergies', {
+                    rounded: true,
+                    shadow: true,
+                    placeholder: 'Search allergies...',
+                    tagColor: {
+                        textColor: '#327b2c',
+                        borderColor: '#43f1f7',
+                        bgColor: '#e8feff',
+                    },
+                    onChange: function (values) {
+                        console.log(values)
+                    }
+                })
+
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading ddlAllergies dropdown options:', error);
+            }
+        });
+    }
+
+    function showSuccessMessage() {
+        $('#errorAlert').hide();
+        $('#successAlert').fadeIn();
+    }
+
+    function showErrorMessage() {
+        $('#successAlert').hide();
+        $('#errorAlert').fadeIn();
+    }
+
+    $('#submitButton').click(function () {
+        debugger;
+        var patientName = $('#patientName').val();
+        var diseasesId = $('#ddlDiseases').val();
+        var epilepsy = $('#ddlEpilepsy').val();
+        var otherNCDs = $('#ddlNCDs').val();
+        var allergies = $('#ddlAllergies').val();
+        var data = {
+            patientName: patientName,
+            diseasesId: diseasesId,
+            epilepsy: epilepsy == 1? true : false,
+            otherNCDs: otherNCDs,
+            allergies: allergies
+        };
+
+        $.ajax({
+            url: '/PatientInformation/SavePatientInformation',
+            method: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function (response) {
+                console.log(response);
+                if (response.status == 201) {
+                    debugger;
+                    $('#patientName').val('');
+                    $('#ddlDiseases').prop('selectedIndex', 0);
+                    $('#ddlEpilepsy').prop('selectedIndex', 0);
+                    $('#ddlNCDs option').prop('selected', false);
+                    $('#ddlAllergies option').prop('selected', false);
+                    $('.mult-select-tag').empty();
+
+                    loadddlNCDs();
+                    loadddlAllergies();
+                    // setTimeout(function () {
+                    //     location.reload();
+                    // }, 3000);
+                    // $('#SuccessMsg').removeClass('hide');
+                    showSuccessMessage();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error submitting data:', error);
+                showErrorMessage();
+            }
+        });
+    });
+</script>

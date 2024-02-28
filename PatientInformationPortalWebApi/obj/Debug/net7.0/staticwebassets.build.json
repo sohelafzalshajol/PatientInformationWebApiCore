@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "RM7udFMCgfcSuQAkkfNEZabGzHkYhnCIFMLLeNj7hq4=",
+  "Source": "PatientInformationPortal",
+  "BasePath": "_content/PatientInformationPortal",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

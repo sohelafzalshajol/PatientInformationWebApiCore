@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Patient Informations List";
+}
+
+<div class="container mb-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12">
+            <h1>Patient Informations List</h1>
+
+            <table id="dataTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Disease</th>
+                        <th>Epilepsy?</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- JS -->
+<script>
+    $(document).ready(function () {
+        fetchData();
+
+        // View button click event
+        $(document).on('click', '.view-btn', function () {
+            var id = $(this).data('id');
+            window.location.href = '/PatientInformation/LoadPatientInformation/?id=' + id;
+        });
+
+        // Update button click event
+        $(document).on('click', '.update-btn', function () {
+            var id = $(this).data('id');
+            window.location.href = '/PatientInformation/LoadPatientInformation/?id=' + id;
+        });
+
+        // Delete button click event
+        $(document).on('click', '.delete-btn', function () {
+            debugger;
+            var id = $(this).data('id');
+
+            var data = {
+                id: id
+            };
+            $.ajax({
+                url: '/PatientInformation/DeletePatientInformation',
+                method: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (response) {
+                    console.log(response);
+                    if (response.status == 200) {
+                        debugger;
+                        alert("Deleted Successfully!");
+                        fetchData();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error deleting data:', error);
+                }
+            });
+        });
+    });
+
+    function fetchData() {
+        $.ajax({
+            url: '/PatientInformation/GetPatientInformationsList',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#dataTable tbody').empty();
+
+                $.each(response.data, function (index, row) {
+                    var tr = $('<tr>');
+                    tr.append('<td>' + row.patientsInfoId + '</td>');
+                    tr.append('<td>' + row.patientsName + '</td>');
+                    tr.append('<td>' + row.diseaseName + '</td>');
+                    if (row.isEpilepsy == 1) {
+                        tr.append('<td>Yes</td>');
+                    } else {
+                        tr.append('<td>No</td>');
+                    }
+                    tr.append('<td>' +
+                        '<button class="btn btn-primary btn-sm view-btn" data-id="' + row.patientsInfoId + '">View</button> ' +
+                        '<button class="btn btn-info btn-sm update-btn" data-id="' + row.patientsInfoId + '">Update</button> ' +
+                        '<button class="btn btn-danger btn-sm delete-btn" data-id="' + row.patientsInfoId + '">Delete</button>' +
+                        '</td>');
+                    $('#dataTable tbody').append(tr);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
+
+
+</script>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "bc3tbs0oy4m/WiFH2YKjeuAKRKSNvgQ4AVc2f8UsxqcpKgOXenJC6WYB/CsXO2odfFtBZY+5xWGz1WbLnkvU6g==",
+  "success": true,
+  "projectFilePath": "C:\\ExcelBDTest\\PatientInformationPortalView\\PatientInformationPortalView.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sohel\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
