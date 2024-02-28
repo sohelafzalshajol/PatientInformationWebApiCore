@@ -16,9 +16,9 @@ Patient Information Collection Project using ASP.NET WebAPI Core 7 for API and A
  
 # How to use
 Here I have given some images to understand the functionality of the project I have developed.
-I have designed a form where I'm taking Patient Name, Disease Name as select dropdown, Epilepsy check as select dropdown, Other NCDs as Multi-Select dropdown with searchable and unique selection checked, Allergies as Multi-Select dropdown with searchable and unique selection checked.
+- I have designed a form where I'm taking Patient Name, Disease Name as select dropdown, Epilepsy check as select dropdown, Other NCDs as Multi-Select dropdown with searchable and unique selection checked, Allergies as Multi-Select dropdown with searchable and unique selection checked.
 ![image](https://github.com/sohelafzalshajol/PatientInformationWebApiCore/assets/70692930/98cfbbef-d11f-4f06-8b1d-3c05be5aae1c)
-For View Details, Update Data and Delete data I have used a table grid to load the list and given actions to every rows.
+- For View Details, Update Data and Delete data I have used a table grid to load the list and given actions to every rows.
 ![image](https://github.com/sohelafzalshajol/PatientInformationWebApiCore/assets/70692930/6ccaa0c7-e227-43e3-9247-ea3b98afc8a3)
-Here is the Database Diagram.
+- Here is the Database Diagram.
 ![image](https://github.com/sohelafzalshajol/PatientInformationWebApiCore/assets/70692930/d08e19b2-5064-4f82-a561-7ce2a6f19aa7)
